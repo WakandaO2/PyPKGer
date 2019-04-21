@@ -6,15 +6,15 @@
     The PKG file as described:
 
     struct pkg_header {
-        int signature_length;
+        unsigned int signature_length;
         char signature[signature_length];
         int files_count;
         struct file_metadata {
-            int file_name_length;
+            unsigned int file_name_length;
             char file_name[file_name_length];
-            int offset_in_file; /* the offset is from AFTER the header
+            unsigned int offset_in_file; /* the offset is from AFTER the header
                                    (e.g. the first file is in offset 0). */
-            int file_size;
+            unsigned int file_size;
         } files_metadata[files_count];
     };
 
