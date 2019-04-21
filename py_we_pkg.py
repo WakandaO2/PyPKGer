@@ -8,7 +8,7 @@
 import sys
 
 from handlers.pkg_handler import PKGHandler
-# from handlers.zip_handler import ZIPHandler
+from handlers.zip_handler import ZIPHandler
 
 
 def parse_args(args):
@@ -19,8 +19,8 @@ def main(argv):
     args = parse_args(argv)
 
     for pkg_filepath in args:
-        parsed_pkg_file = PKGHandler.parse_file(pkg_filepath)
-        # TODO: Add ZIP file creation after ZIPHandler implementation.
+        pkg_file = PKGHandler.parse_file(pkg_filepath)
+        ZIPHandler.create_file(pkg_file)
 
 
 if __name__ == "__main__":

@@ -5,6 +5,7 @@
 """
 
 
+import os
 import struct
 
 
@@ -21,8 +22,15 @@ class GenericFileHandler(object):
     PARSE_FILE_MODE = "rb"
     CREATE_FILE_MODE = "wb"
 
+    INTEGER_STRUCT = "I"
+
     @classmethod
-    def _parse_integer(cls, opened_file):
+    def _add_extension(cls, file_name):
+        return \
+            "{}.{}".format(os.path.splitext(file_name)[0], cls.EXTENSION)
+
+    @classmethod
+    def _read_integer(cls, opened_file):
         raw_data = opened_file.read(struct.calcsize(cls.INTEGER_STRUCT))
         return struct.unpack(cls.INTEGER_STRUCT, raw_data)[0]
 

@@ -37,26 +37,27 @@ class PKGHandler(GenericFileHandler):
     Wallpaper Engine's .pkg files handler.
     """
     INTEGER_STRUCT = "<I"
+    EXTENSION = "pkg"
 
     @classmethod
     def parse_file(cls, filepath):
         parsed_pkg = PKGFile(filepath)
 
         with open(filepath, cls.PARSE_FILE_MODE) as pkg_file:
-            signature_length = cls._parse_integer(pkg_file)
+            signature_length = cls._read_integer(pkg_file)
 
             parsed_pkg.signature = pkg_file.read(signature_length)
-            files_count = cls._parse_integer(pkg_file)
+            files_count = cls._read_integer(pkg_file)
 
             parsed_pkg.files = []
             for f in range(files_count):
-                current_filepath_len = cls._parse_integer(pkg_file)
+                current_filepath_len = cls._read_integer(pkg_file)
 
                 current_filepath = pkg_file.read(current_filepath_len)
                 current_file = GenericFile(current_filepath)
 
-                current_file.offset = cls._parse_integer(pkg_file)
-                current_file.size = cls._parse_integer(pkg_file)
+                current_file.offset = cls._read_integer(pkg_file)
+                current_file.size = cls._read_integer(pkg_file)
 
                 parsed_pkg.files.append(current_file)
 
