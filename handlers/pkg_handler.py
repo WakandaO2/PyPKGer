@@ -1,6 +1,6 @@
 """
-    File:    file_handler.py
-    Purpose: Generic file handler.
+    File:    pkg_handler.py
+    Purpose: PKG file handler.
     Creator: WakandaO2 (21/04/2019)
 
     The PKG file as described:
