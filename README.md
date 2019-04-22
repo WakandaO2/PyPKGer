@@ -1,4 +1,4 @@
-# PyWallpaperEnginePKG
+# PyPKGer
 ## Introduction
 "Scene" Wallpapers used in Wallpaper Engine are saved in proprietary PKG format. 
 With this tool you can extract and create .pkg files.
