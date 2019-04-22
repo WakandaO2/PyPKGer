@@ -5,7 +5,7 @@
 """
 
 
-from zipfile import ZipFile
+import zipfile
 
 from handlers.file_handler import GenericFileHandler
 
@@ -25,6 +25,6 @@ class ZIPHandler(GenericFileHandler):
     def create_file(cls, file_to_write):
         zip_file_path = cls._add_extension(file_to_write.path)
 
-        with ZipFile(zip_file_path, cls.ZIP_WRITE_MODE) as opened_zip:
+        with zipfile.ZipFile(zip_file_path, cls.ZIP_WRITE_MODE) as opened_zip:
             for f in file_to_write.files:
                 opened_zip.writestr(f.path, f.data)
