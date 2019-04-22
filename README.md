@@ -8,6 +8,7 @@ With this tool you can extract and create .pkg files.
 
 ## Planned Features
 - **WIP:** Create PKG file from a ZIP archive. 
+- TEX files support.
 
 ## Other Important Information
 * This tool was created for educational purposes only.
