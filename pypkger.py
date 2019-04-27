@@ -5,23 +5,27 @@
     Creator: WakandaO2 (21/04/2019)
 """
 
+import os
 import sys
 
-from handlers.pkg_handler import PKGHandler
+from handlers import HANDLERS_BY_EXTENSION
 from handlers.zip_handler import ZIPHandler
 
 
-def parse_args(args):
-    return args[1:]
+def main(args):
+    for filepath in args:
+        filepath_ext = os.path.splitext(filepath)[1][1:]
 
+        try:
+            parsed_file = \
+                HANDLERS_BY_EXTENSION[filepath_ext].parse_file(filepath)
+            ZIPHandler.create_file(parsed_file)
 
-def main(argv):
-    args = parse_args(argv)
-
-    for pkg_filepath in args:
-        pkg_file = PKGHandler.parse_file(pkg_filepath)
-        ZIPHandler.create_file(pkg_file)
+        except KeyError:
+            print "\"{}\" file is not supported.".format(filepath_ext)
+        except NotImplementedError:
+            print "\"{}\" file is not yet supported.".format(filepath_ext)
 
 
 if __name__ == "__main__":
-    main(sys.argv)
+    main(sys.argv[1:])
