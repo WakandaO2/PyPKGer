@@ -7,7 +7,7 @@
 
 import zipfile
 
-from handlers.file_handler import GenericFileHandler
+from handlers.file_handler import GenericFileHandler, GenericFile
 
 
 class ZIPHandler(GenericFileHandler):
@@ -16,10 +16,21 @@ class ZIPHandler(GenericFileHandler):
     """
     EXTENSION = "zip"
     ZIP_WRITE_MODE = "w"
+    ZIP_READ_MODE = "a"
 
     @classmethod
     def parse_file(cls, filepath):
-        raise NotImplementedError()
+        parsed_zip = GenericFile(filepath)
+        parsed_zip.files = []
+
+        with zipfile.ZipFile(filepath, cls.ZIP_READ_MODE) as opened_zip:
+            for filename in opened_zip.namelist():
+                current_file = GenericFile(filename)
+                current_file.data = opened_zip.read(filename)
+
+                parsed_zip.files.append(current_file)
+
+        return parsed_zip
 
     @classmethod
     def create_file(cls, file_to_write):

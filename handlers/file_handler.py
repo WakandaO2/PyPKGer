@@ -13,6 +13,8 @@ class GenericFile(object):
 
     def __init__(self, filepath):
         self.path = filepath
+        self.name = ""
+        self.data = ""
 
 
 class GenericFileHandler(object):
@@ -35,9 +37,14 @@ class GenericFileHandler(object):
         return struct.unpack(cls.INTEGER_STRUCT, raw_data)[0]
 
     @classmethod
+    def _write_integer(cls, opened_file, integer):
+        data_to_write = struct.pack(cls.INTEGER_STRUCT, integer)
+        opened_file.write(data_to_write)
+
+    @classmethod
     def parse_file(cls, filepath):
         raise NotImplementedError()
 
     @classmethod
-    def create_file(cls, file):
+    def create_file(cls, file_to_write):
         raise NotImplementedError()

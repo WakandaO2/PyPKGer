@@ -9,6 +9,7 @@ import os
 import sys
 
 from handlers import HANDLERS_BY_EXTENSION
+from handlers.pkg_handler import PKGHandler, PKGFile
 from handlers.zip_handler import ZIPHandler
 
 
@@ -19,7 +20,12 @@ def main(args):
         try:
             parsed_file = \
                 HANDLERS_BY_EXTENSION[filepath_ext].parse_file(filepath)
-            ZIPHandler.create_file(parsed_file)
+
+            print type(parsed_file)
+            if isinstance(parsed_file, PKGFile):
+                ZIPHandler.create_file(parsed_file)
+            else:
+                PKGHandler.create_file(parsed_file)
 
         except KeyError:
             print "\"{}\" file is not supported.".format(filepath_ext)

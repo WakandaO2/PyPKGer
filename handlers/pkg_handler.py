@@ -39,6 +39,11 @@ class PKGHandler(GenericFileHandler):
     INTEGER_STRUCT = "<I"
     EXTENSION = "pkg"
 
+    PKG_VER_SIGNATURES = {
+        1: "PKGV0001",
+        2: "PKGV0002"
+    }
+
     @classmethod
     def parse_file(cls, filepath):
         parsed_pkg = PKGFile(filepath)
@@ -72,5 +77,25 @@ class PKGHandler(GenericFileHandler):
         return parsed_pkg
 
     @classmethod
-    def create_file(cls, file):
-        raise NotImplementedError()
+    def create_file(cls, file_to_write, pkg_version=1):
+        pkg_filepath = cls._add_extension(file_to_write.path)
+
+        with open(pkg_filepath, cls.CREATE_FILE_MODE) as opened_pkg:
+            cls._write_integer(opened_pkg,
+                               len(cls.PKG_VER_SIGNATURES[pkg_version]))
+            opened_pkg.write(cls.PKG_VER_SIGNATURES[pkg_version])
+
+            cls._write_integer(opened_pkg, len(file_to_write.files))
+
+            current_offset = 0
+
+            for f in file_to_write.files:
+                cls._write_integer(opened_pkg, len(f.path))
+                opened_pkg.write(f.path)
+                cls._write_integer(opened_pkg, current_offset)
+                cls._write_integer(opened_pkg, len(f.data))
+
+                current_offset += len(f.data)
+
+            for f in file_to_write.files:
+                opened_pkg.write(f.data)
