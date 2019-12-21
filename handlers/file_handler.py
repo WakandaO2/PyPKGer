@@ -13,7 +13,6 @@ class GenericFile(object):
 
     def __init__(self, filepath):
         self.path = filepath
-        self.name = ""
         self.data = ""
 
 
@@ -23,6 +22,7 @@ class GenericFileHandler(object):
     """
     PARSE_FILE_MODE = "rb"
     CREATE_FILE_MODE = "wb"
+    EXTENSION = ""
 
     INTEGER_STRUCT = "I"
 

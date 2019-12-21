@@ -1,7 +1,7 @@
-import pkg_handler
-import zip_handler
+from handlers.pkg_handler import PKGHandler
+from handlers.zip_handler import ZIPHandler
 
 HANDLERS_BY_EXTENSION = {
-    pkg_handler.PKGHandler.EXTENSION: pkg_handler.PKGHandler,
-    zip_handler.ZIPHandler.EXTENSION: zip_handler.ZIPHandler
+    PKGHandler.EXTENSION: PKGHandler,
+    ZIPHandler.EXTENSION: ZIPHandler
 }

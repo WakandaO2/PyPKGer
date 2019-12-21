@@ -13,7 +13,7 @@
             unsigned int file_name_length;
             char file_name[file_name_length];
             unsigned int offset_in_file; /* the offset is from AFTER the header
-                                   (e.g. the first file is in offset 0). */
+                                            (e.g. the first file is in offset 0). */
             unsigned int file_size;
         } files_metadata[files_count];
     };
@@ -40,8 +40,8 @@ class PKGHandler(GenericFileHandler):
     EXTENSION = "pkg"
 
     PKG_VER_SIGNATURES = {
-        1: "PKGV0001",
-        2: "PKGV0002"
+        1: b"PKGV0001",
+        2: b"PKGV0002"
     }
 
     @classmethod
@@ -58,7 +58,8 @@ class PKGHandler(GenericFileHandler):
             for f in range(files_count):
                 current_filepath_len = cls._read_integer(pkg_file)
 
-                current_filepath = pkg_file.read(current_filepath_len)
+                current_filepath = str(pkg_file.read(current_filepath_len), 
+                                       encoding="utf-8")
                 current_file = GenericFile(current_filepath)
 
                 current_file.offset = cls._read_integer(pkg_file)
@@ -90,8 +91,12 @@ class PKGHandler(GenericFileHandler):
             current_offset = 0
 
             for f in file_to_write.files:
-                cls._write_integer(opened_pkg, len(f.path))
-                opened_pkg.write(f.path)
+                # We write a chunk of bytes and not a string.
+                encoded_path = bytes(f.path, "utf-8")
+
+                cls._write_integer(opened_pkg, len(encoded_path))
+                opened_pkg.write(encoded_path)
+
                 cls._write_integer(opened_pkg, current_offset)
                 cls._write_integer(opened_pkg, len(f.data))
 
