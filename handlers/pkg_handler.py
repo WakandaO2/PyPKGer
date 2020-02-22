@@ -21,7 +21,6 @@
     after the header, the files are concatenated as-is without seperators.
 """
 
-
 from handlers.file_handler import GenericFileHandler, GenericFile
 
 

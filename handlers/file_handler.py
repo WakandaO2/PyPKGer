@@ -4,7 +4,6 @@
     Creator: WakandaO2 (21/04/2019)
 """
 
-
 import os
 import struct
 
@@ -28,8 +27,7 @@ class GenericFileHandler(object):
 
     @classmethod
     def _add_extension(cls, file_name):
-        return \
-            "{}.{}".format(os.path.splitext(file_name)[0], cls.EXTENSION)
+        return f"{os.path.splitext(file_name)[0]}.{cls.EXTENSION}"
 
     @classmethod
     def _read_integer(cls, opened_file):

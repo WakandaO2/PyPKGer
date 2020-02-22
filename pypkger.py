@@ -29,20 +29,20 @@ def main(argv):
         file_ext = str.lower(os.path.splitext(file_path)[1][1:])
 
         if file_ext == parsed_args.output_type:
-            print("Skipping file \"{}\"".format(file_path))
+            print(f"Skipping file \"{file_path}\"")
             continue
 
         try:
             parsed_file = \
                 HANDLERS_BY_EXTENSION[file_ext].parse_file(file_path)
 
-            print("Converting file \"{}\" to {}.".format(file_path, parsed_args.output_type))
+            print(f"Converting file \"{file_path}\" to {parsed_args.output_type}.")
             HANDLERS_BY_EXTENSION[parsed_args.output_type].create_file(parsed_file)
 
         except KeyError:
-            print("\"{}\" file is not supported.".format(file_ext))
+            print(f"\"{file_ext}\" file is not supported.")
         except NotImplementedError:
-            print("\"{}\" file is not yet supported.".format(file_ext))
+            print(f"\"{file_ext}\" file is not yet supported.")
 
 
 if __name__ == "__main__":

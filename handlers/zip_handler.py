@@ -4,7 +4,6 @@
     Creator: WakandaO2 (21/04/2019)
 """
 
-
 import zipfile
 
 from handlers.file_handler import GenericFileHandler, GenericFile
