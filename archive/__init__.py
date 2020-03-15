@@ -1,6 +1,7 @@
 import archive.pkg
 import archive.zip
 
+
 SUPPORTED_TYPES = {
     archive.pkg.EXTENSION: archive.pkg,
     archive.zip.EXTENSION: archive.zip

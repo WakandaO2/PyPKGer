@@ -33,6 +33,9 @@ def export_archive(exported_file):
     """
     exported_filename = exported_file.replace_ext(exported_file.filename, EXTENSION)
 
+    if not exported_file.is_archive():
+        raise TypeError("The file given is not an archive!")
+
     with zipfile.ZipFile(exported_filename, "w") as opened_zip:
         for in_file in exported_file.data:
             opened_zip.writestr(in_file.filename, in_file.data)

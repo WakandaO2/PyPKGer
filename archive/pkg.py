@@ -41,7 +41,6 @@ class PKGFile(GenericFile):
     """
     Wallpaper Engine's .pkg archive.
     """
-
     def __init__(self, filename):
         super(PKGFile, self).__init__(filename)
         self._parse_pkg()
