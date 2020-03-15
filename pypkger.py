@@ -9,10 +9,10 @@ import argparse
 import os
 import sys
 
-from handlers import HANDLERS_BY_EXTENSION
+import archive
 
 
-def parse_args(argv):
+def parse_args():
     parser = argparse.ArgumentParser(description="Convert to/from Wallpaper Engine's PKG format.")
     parser.add_argument("-ot", "--output-type", help="file type to convert to", required=True)
     parser.add_argument("file_paths", help="paths of files to convert", nargs="+")
@@ -23,27 +23,22 @@ def parse_args(argv):
 
 
 def main(argv):
-    parsed_args = parse_args(argv)
-
-    for file_path in parsed_args.file_paths:
+    for file_path in argv.file_paths:
         file_ext = str.lower(os.path.splitext(file_path)[1][1:])
 
-        if file_ext == parsed_args.output_type:
+        if file_ext == argv.output_type:
             print(f"Skipping file \"{file_path}\"")
             continue
 
         try:
-            parsed_file = \
-                HANDLERS_BY_EXTENSION[file_ext].parse_file(file_path)
+            parsed_file = archive.ARCHIVE_TYPES[file_ext](file_path)
 
-            print(f"Converting file \"{file_path}\" to {parsed_args.output_type}.")
-            HANDLERS_BY_EXTENSION[parsed_args.output_type].create_file(parsed_file)
+            print(f"Converting file \"{file_path}\" to {argv.output_type}.")
+            archive.SUPPORTED_TYPES[argv.output_type].export_archive(parsed_file)
 
         except KeyError:
             print(f"\"{file_ext}\" file is not supported.")
-        except NotImplementedError:
-            print(f"\"{file_ext}\" file is not yet supported.")
 
 
 if __name__ == "__main__":
-    main(sys.argv)
+    main(parse_args())
