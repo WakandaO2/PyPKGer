@@ -95,6 +95,7 @@ def export_archive(exported_file, pkg_version=1):
 
         exported_data += struct.pack(PKG_INTEGER_FMT, current_offset)
         exported_data += struct.pack(PKG_INTEGER_FMT, len(in_file.data))
+        current_offset += len(in_file.data)
 
     for in_file in exported_file.data:
         exported_data += in_file.data

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
     File:    pypkger.py
     Purpose: PyPKGer - Extract and create .pkg
@@ -14,11 +15,11 @@ import archive
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Convert to/from Wallpaper Engine's PKG format.")
-    parser.add_argument("-ot", "--output-type", help="file type to convert to", required=True)
+    parser.add_argument("-ot", "--output-type", help="Output file type", 
+                        default="", type=str.lower)
     parser.add_argument("file_paths", help="paths of files to convert", nargs="+")
 
     parsed_args = parser.parse_args()
-    parsed_args.output_type = str.lower(parsed_args.output_type)
     return parsed_args
 
 
@@ -32,8 +33,6 @@ def main(argv):
 
         try:
             parsed_archive = archive.ARCHIVE_TYPES[file_ext](file_path)
-
-            print(f'Converting archive "{file_path}" to "{argv.output_type}".')
             archive.export(parsed_archive, argv.output_type)
 
         except KeyError:
