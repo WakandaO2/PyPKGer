@@ -23,7 +23,7 @@
 
 import struct
 
-from generic.file import GenericFile
+from generic.file import GenericFile, GenericArchive, update_extension
 
 
 EXTENSION = "pkg"
@@ -37,23 +37,21 @@ PKG_VERSION_SIGNATURES = {
 }
 
 
-class PKGFile(GenericFile):
+class PKGArchive(GenericArchive):
     """
     Wallpaper Engine's .pkg archive.
     """
     def __init__(self, filename):
-        super(PKGFile, self).__init__(filename)
-        self._parse_pkg()
+        super(PKGArchive, self).__init__(filename)
+        self._parse_pkg(filename)
 
-    def _parse_pkg(self):
-        opened_pkg = open(self.filename, "rb")
+    def _parse_pkg(self, pkg_filepath):
+        opened_pkg = open(pkg_filepath, "rb")
 
         signature_len = struct.unpack(PKG_INTEGER_FMT, opened_pkg.read(PKG_INTEGER_SIZE))[0]
         self.signature = opened_pkg.read(signature_len)
 
         files_count = struct.unpack(PKG_INTEGER_FMT, opened_pkg.read(PKG_INTEGER_SIZE))[0]
-
-        self.data = []
         files_info = []
 
         for _ in range(files_count):
@@ -81,10 +79,7 @@ def export_archive(exported_file, pkg_version=1):
     """
     Export an archive in PKG format.
     """
-    export_filepath = exported_file.replace_ext(exported_file.filename, EXTENSION)
-    
-    if not exported_file.is_archive():
-        raise TypeError("The file given is not an archive!")
+    export_filepath = update_extension(exported_file.filename, EXTENSION)
     
     exported_data = struct.pack(PKG_INTEGER_FMT, len(PKG_VERSION_SIGNATURES[pkg_version]))
     exported_data += PKG_VERSION_SIGNATURES[pkg_version]

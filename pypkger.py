@@ -27,17 +27,17 @@ def main(argv):
         file_ext = str.lower(os.path.splitext(file_path)[1][1:])
 
         if file_ext == argv.output_type:
-            print(f"Skipping file \"{file_path}\"")
+            print(f'Skipping file "{file_path}"')
             continue
 
         try:
-            parsed_file = archive.ARCHIVE_TYPES[file_ext](file_path)
+            parsed_archive = archive.ARCHIVE_TYPES[file_ext](file_path)
 
-            print(f"Converting file \"{file_path}\" to {argv.output_type}.")
-            archive.SUPPORTED_TYPES[argv.output_type].export_archive(parsed_file)
+            print(f'Converting archive "{file_path}" to "{argv.output_type}".')
+            archive.export(parsed_archive, argv.output_type)
 
         except KeyError:
-            print(f"\"{file_ext}\" file is not supported.")
+            print(f'"{file_ext}" file is not supported.')
 
 
 if __name__ == "__main__":

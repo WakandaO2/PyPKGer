@@ -6,18 +6,17 @@
 
 import zipfile
 
-from generic.file import GenericFile
+from generic.file import GenericFile, GenericArchive, update_extension
 
 EXTENSION = "zip"
 
 
-class ZIPFile(GenericFile):
+class ZIPArchive(GenericArchive):
     """
     Represents a ZIP archive.
     """
     def __init__(self, filename):
-        super(ZIPFile, self).__init__(filename)
-        self.data = []
+        super(ZIPArchive, self).__init__(filename)
 
         with zipfile.ZipFile(filename, "a") as opened_zip:
             for filename in opened_zip.namelist():
@@ -31,10 +30,7 @@ def export_archive(exported_file):
     """
     Export an archive in ZIP format.
     """
-    exported_filename = exported_file.replace_ext(exported_file.filename, EXTENSION)
-
-    if not exported_file.is_archive():
-        raise TypeError("The file given is not an archive!")
+    exported_filename = update_extension(exported_file.filename, EXTENSION)
 
     with zipfile.ZipFile(exported_filename, "w") as opened_zip:
         for in_file in exported_file.data:
