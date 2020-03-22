@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
     File:    pypkger.py
     Purpose: PyPKGer - Extract and create .pkg
@@ -9,41 +10,34 @@ import argparse
 import os
 import sys
 
-from handlers import HANDLERS_BY_EXTENSION
+import archive
 
 
-def parse_args(argv):
+def parse_args():
     parser = argparse.ArgumentParser(description="Convert to/from Wallpaper Engine's PKG format.")
-    parser.add_argument("-ot", "--output-type", help="file type to convert to", required=True)
+    parser.add_argument("-ot", "--output-type", help="Output file type", 
+                        default="", type=str.lower)
     parser.add_argument("file_paths", help="paths of files to convert", nargs="+")
 
     parsed_args = parser.parse_args()
-    parsed_args.output_type = str.lower(parsed_args.output_type)
     return parsed_args
 
 
 def main(argv):
-    parsed_args = parse_args(argv)
-
-    for file_path in parsed_args.file_paths:
+    for file_path in argv.file_paths:
         file_ext = str.lower(os.path.splitext(file_path)[1][1:])
 
-        if file_ext == parsed_args.output_type:
-            print(f"Skipping file \"{file_path}\"")
+        if file_ext == argv.output_type:
+            print(f'Skipping file "{file_path}"')
             continue
 
         try:
-            parsed_file = \
-                HANDLERS_BY_EXTENSION[file_ext].parse_file(file_path)
-
-            print(f"Converting file \"{file_path}\" to {parsed_args.output_type}.")
-            HANDLERS_BY_EXTENSION[parsed_args.output_type].create_file(parsed_file)
+            parsed_archive = archive.ARCHIVE_TYPES[file_ext](file_path)
+            archive.export(parsed_archive, argv.output_type)
 
         except KeyError:
-            print(f"\"{file_ext}\" file is not supported.")
-        except NotImplementedError:
-            print(f"\"{file_ext}\" file is not yet supported.")
+            print(f'"{file_ext}" file is not supported.')
 
 
 if __name__ == "__main__":
-    main(sys.argv)
+    main(parse_args())

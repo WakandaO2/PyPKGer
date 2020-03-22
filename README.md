@@ -1,29 +1,34 @@
-**PyPKGer**
-===========
+# **PyPKGer**
 
-## **Introduction**
+
+## Introduction
 "Scene" Wallpapers used in Wallpaper Engine are saved in proprietary PKG format.  
-With this tool you can convert PKG files to ZIP archive and vice-versa.  
+With this tool you can extract PKG files or convert them to known archive formats.  
 
-&nbsp;
-## **Usage**
+## Features
+- Convert PKG files to/from other archive formats.
+- Extract PKG files.
+
+## Usage
 - Convert "package.pkg" to ZIP archive:
 ```bash
 python3 ./pypkger.py -ot zip "package.pkg" 
 ```
 
-- Convert "archive.zip" to PKG file:
+- Create a PKG file from the directory "dir":
 ```bash
-python3 ./pypkger.py -ot pkg "archive.zip"
+python3 ./pypkger.py -ot pkg "dir/"
 ```
 
-&nbsp;
-## **Planned Features**
-- TEX files support.
+- Extract "package.pkg":
+```bash
+python3 ./pypkger.py "package.pkg"
+```
 
-&nbsp;
+## Planned Features
+- TEX files support. (TEX is another format used by Wallpaper Engine.)
 
 ---
-## Further Notes
+### Further Notes
 * This tool was created for educational purposes only.
 * PKG files might contain copyrighted materials.
